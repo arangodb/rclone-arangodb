@@ -22,7 +22,7 @@ do
 
   . ./targets.env
   rm -rf ./rclone && \
-  git clone --single-branch --depth 1 -b ${RCLONE_VERSION} https://github.com/rclone/rclone.git && cd ./rclone
+  git clone --single-branch --depth 1 -b ${RCLONE_VERSION} https://github.com/arangodb/rclone-update.git rclone && cd ./rclone
 
   for TARGET in ${TARGETS}
   do
@@ -38,7 +38,7 @@ do
       -e "TARGET_ARCH=$TARGET_ARCH" \
       -u "${UID}:${GID}" \
       -w /rclone ${GO_VERSION} \
-      bash +x -c 'cd /rclone; go mod vendor; go get -u github.com/cloudflare/circl; go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity; go get -u golang.org/x/crypto; go get google.golang.org/api; go mod tidy; go mod vendor; function build { GOOS=$1 GOARCH=$2 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X github.com/rclone/rclone/fs.VersionSuffix= " -tags cmount -o /rclone/${RCLONE_OUTPUT}_rclone-arangodb-$(echo $1 | sed "s/darwin/macos/g")-$2$([[ $1 == "windows" ]] && echo ".exe"); }; go get -u golang.org/x/sys; build $TARGET_OS $TARGET_ARCH' && \
+      bash +x -c 'cd /rclone; go mod vendor; go mod tidy; go mod vendor; function build { GOOS=$1 GOARCH=$2 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X github.com/rclone/rclone/fs.VersionSuffix= " -tags cmount -o /rclone/${RCLONE_OUTPUT}_rclone-arangodb-$(echo $1 | sed "s/darwin/macos/g")-$2$([[ $1 == "windows" ]] && echo ".exe"); }; build $TARGET_OS $TARGET_ARCH' && \
       mv ./*rclone-arangodb-*-* "${RELEASE_OUTPUT}" && rm -rf ./*rclone-arangodb-*-*
     printf "\n\nDone building rclone $RCLONE_VERSION for $TARGET_OS-$TARGET_ARCH!\n\n"
   done
