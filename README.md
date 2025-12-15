@@ -23,10 +23,11 @@ required:
   - set `golang` version within `./toolchain.env`
   - check `<MAJOR>.<MINOR>` used rclone version in `rclone.env` and produced
     targets within `targets.env`
-  - update `./make_release.sh` script in case dependant components are rclone
+  - update `./make_release.sh` script in case dependant components of rclone
     must be upgraded
+  - update ./release.env to set a release `<TIMESTAMP>`: `echo TIMESTAMP=$(date +%Y%m%d%H%M%S) > ./release.env`
 - run `./make_release.sh` to produce necessary binaries:
-  - `golang-<GO_VERSION>-<COMMIT>` folder with necessary structure and binaries
+  - `golang-<GO_VERSION>-<COMMIT>-<TIMESTAMP>` folder with necessary structure and binaries
     should be produced
 - push local changes to GitHub
 - make tagged release `golang-<GO_VERSION>-<COMMIT>` with artifacts and

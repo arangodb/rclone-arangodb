@@ -5,10 +5,11 @@ set -e
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd ${SCRIPT_DIR}
 . ./toolchain.env
+. ./release.env
 
 printf "Making release of rclone for ArangoDB with $GO_VERSION...\n\n"
 
-RELEASE_TAG="${GO_VERSION//:/-}-$(git rev-parse --short HEAD)"
+RELEASE_TAG="${GO_VERSION//:/-}-$(git rev-parse --short HEAD)_$TIMESTAMP"
 RELEASE_OUTPUT=${SCRIPT_DIR}/${RELEASE_TAG}
 rm -rf ${RELEASE_OUTPUT} && mkdir -p ${RELEASE_OUTPUT}
 
