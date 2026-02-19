@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd ${SCRIPT_DIR}
@@ -13,7 +14,7 @@ RELEASE_TAG="${GO_VERSION//:/-}-$(git rev-parse --short HEAD)_$TIMESTAMP"
 RELEASE_OUTPUT=${SCRIPT_DIR}/${RELEASE_TAG}
 rm -rf ${RELEASE_OUTPUT} && mkdir -p ${RELEASE_OUTPUT}
 
-for ARANGODB in $(echo 3.*)
+for ARANGODB in $(echo [3-4].*)
 do
   cd ${SCRIPT_DIR}/${ARANGODB}
 
